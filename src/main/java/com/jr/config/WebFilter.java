@@ -1,7 +1,7 @@
 package com.jr.config;
 
 import com.jr.code.Code;
-import com.jr.util.ResponseMsg;
+import com.jr.util.ReqRespMsgUtil;
 import com.jr.util.Result;
 
 import javax.servlet.*;
@@ -62,10 +62,10 @@ public class WebFilter implements Filter {
                 chain.doFilter(request, response);
 
             } else {
-                ResponseMsg.sendMsg(response, new Result(Code.BUSINESS_ERR, false, "路径访问错误"));
+                ReqRespMsgUtil.sendMsg(response, new Result(Code.BUSINESS_ERR, false, "路径访问错误"));
             }
         } else {
-            ResponseMsg.sendMsg(response, new Result(Code.BUSINESS_ERR, false, "路径不允许过多的 / "));
+            ReqRespMsgUtil.sendMsg(response, new Result(Code.BUSINESS_ERR, false, "路径不允许过多的 / "));
         }
 
     }

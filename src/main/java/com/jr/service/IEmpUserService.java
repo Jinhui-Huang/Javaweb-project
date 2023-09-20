@@ -5,7 +5,7 @@ import com.jr.pojo.EmpUser;
 public interface IEmpUserService {
 
 
-    Boolean loginService(EmpUser empUser);
+    EmpUser loginService(EmpUser empUser);
 
     Integer registerService(EmpUser empUser);
 

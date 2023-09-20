@@ -20,19 +20,29 @@ public class EmpUserServiceImpl implements IEmpUserService {
 
 
     @Override
-    public Boolean loginService(EmpUser empUser) {
+    public EmpUser loginService(EmpUser empUser) {
         try {
-            boolean flag = false;
+            /*boolean flag = false;
             Integer empUserId = empUser.getEmpUserId();
             int count = empUserDaoImpl.countEmpUserById(empUserId);
-            /*count !=0 用户存在*/
+            *//*count !=0 用户存在*//*
             if (count != 0) {
                 EmpUser selectEmpUser = empUserDaoImpl.selectEmpUser(empUser);
                 if (selectEmpUser != null) {
                     flag = true;
                 }
             }
-            return flag;
+            return flag;*/
+
+            EmpUser user = null;
+            Integer empUserId = empUser.getEmpUserId();
+            int count = empUserDaoImpl.countEmpUserById(empUserId);
+            /*count !=0 用户存在*/
+            if (count != 0) {
+                user = empUserDaoImpl.selectEmpUser(empUser);
+            }
+            return user;
+
         } catch (Exception e) {
             logger.error(e);
             throw new BusinessException(Code.BUSINESS_ERR, "参数错误");
