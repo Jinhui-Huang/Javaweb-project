@@ -32,6 +32,6 @@ public interface IEmpUserDao {
     List<EmpUser> selectByPage2(RowBounds rowBounds);
 
     @Select("select * from tb_empuser")
-    List<EmpUser> selectByPage3(RowBounds rowBounds);
+    List<EmpUser> selectByPage3();
 
 }

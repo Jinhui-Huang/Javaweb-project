@@ -1,3 +1,5 @@
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jr.dao.IEmpUserDao;
 import com.jr.pojo.EmpUser;
 import com.jr.util.MyBatisUtil;
@@ -76,10 +78,31 @@ public class IEmpUserDaoTest  {
 
     @Test
     public void testSelectPage2() {
-        List<EmpUser> empUsers = empUserDaoImpl.selectByPage2(new RowBounds(0, 3));
+        List<EmpUser> empUsers = empUserDaoImpl.selectByPage2(new RowBounds(1, 3));
+
         for (EmpUser empUser : empUsers) {
             System.out.println(empUser);
         }
+    }
+
+    @Test
+    public void testSelectPage3() {
+
+        PageHelper.startPage(5, 3);
+        List<EmpUser> empUsers = empUserDaoImpl.selectByPage3();
+        PageInfo<EmpUser> pageInfo = new PageInfo<>(empUsers);
+
+        List<EmpUser> list = pageInfo.getList();
+        for (EmpUser user : list) {
+            System.out.println(user);
+        }
+
+        System.out.println("当前页码：第" + pageInfo.getPageNum() + "页");
+        System.out.println("分页大小：每页" + pageInfo.getPageSize() + "条");
+        System.out.println("数据总数：共" + pageInfo.getTotal() + "条");
+        System.out.println("总页数：共" + pageInfo.getPages() + "页");
+
+
     }
 }
 

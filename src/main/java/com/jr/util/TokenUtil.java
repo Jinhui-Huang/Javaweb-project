@@ -35,6 +35,8 @@ import java.util.Map;
  * @Date: 2023/9/19 09:28
  */
 public class TokenUtil {
+    public static final ThreadLocal<?> SERVER_LOCAL = new ThreadLocal<>();
+
     private static final Logger logger = Logger.getLogger(TokenUtil.class);
 
     /*token过期时间*/
