@@ -25,12 +25,19 @@ public class TokenTest {
         String token = TokenUtil.sign(user);
         System.out.println("生成token==>" + token);
 
+        token += "ds";
+
         Map<String, Object> map = TokenUtil.verify(token, EmpUser.class);
-        EmpUser verifyUser = (EmpUser) map.get(EmpUser.class.getSimpleName());
-        System.out.println(verifyUser);
-        local.set(verifyUser);
-        verifyUser.setEmpUserPwd("1234");
-        local.set(verifyUser);
-        System.out.println(local.get());
+        if ((Boolean) map.get("status")) {
+            EmpUser verifyUser = (EmpUser) map.get(EmpUser.class.getSimpleName());
+            System.out.println(verifyUser);
+            local.set(verifyUser);
+            verifyUser.setEmpUserPwd("1234");
+            local.set(verifyUser);
+            System.out.println(local.get());
+        } else {
+            System.out.println(map.get("msg"));
+        }
+
     }
 }

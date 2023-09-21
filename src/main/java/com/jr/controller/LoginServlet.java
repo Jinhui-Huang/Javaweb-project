@@ -14,12 +14,15 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 
 @WebServlet("/login/*")
 public class LoginServlet extends HttpServlet {
@@ -86,8 +89,6 @@ public class LoginServlet extends HttpServlet {
             ReqRespMsgUtil.sendMsg(resp, new Result(Code.BUSINESS_ERR, false, "验证码异常"));
 
         }
-
-
     }
 
 
@@ -100,11 +101,30 @@ public class LoginServlet extends HttpServlet {
             /* 一级路径登陆功能 */
             EmpUser user = ReqRespMsgUtil.getMsg(req, resp, EmpUser.class);
             EmpUser signUser = empUserServiceImpl.loginService(user);
-            if (signUser != null) {
+            if (signUser != null && user != null) {
                 signUser.setEmpUserPwd(null);
                 String sign = TokenUtil.sign(signUser);
-                resp.setHeader("token", sign);
-                ReqRespMsgUtil.sendMsg(resp, new Result(Code.GET_ERR, signUser, "登陆成功!"));
+                ArrayList<Cookie> cookieList = new ArrayList<>();
+                cookieList.add(new Cookie("empUserId", signUser.getEmpUserId().toString()));
+                cookieList.add(new Cookie("empUserName", URLEncoder.encode (signUser.getEmpUserName(), "UTF-8" )));
+                //cookieList.add(new Cookie("empUserPwd", user.getEmpUserPwd()));
+                cookieList.add(new Cookie("token", sign));
+
+                for (Cookie cookie : cookieList) {
+                    cookie.setMaxAge(60*60*24*2);
+                    cookie.setPath("/");
+                    cookie.setSecure(true);
+                    cookie.setHttpOnly(true);
+                    resp.addCookie(cookie);
+                }
+                Collection<String> headers = resp.getHeaders("Set-Cookie");
+                resp.setHeader("Set-Cookie", "");
+                for (String header : headers) {
+                    resp.addHeader("Set-Cookie", header + " ; SameSite=None");
+                }
+
+
+                ReqRespMsgUtil.sendMsg(resp, new Result(Code.GET_OK, true, "登陆成功!"));
             } else {
                 ReqRespMsgUtil.sendMsg(resp, new Result(Code.GET_ERR, false, "用户或密码错误"));
             }

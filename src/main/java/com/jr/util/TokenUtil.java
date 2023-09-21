@@ -35,12 +35,12 @@ import java.util.Map;
  * @Date: 2023/9/19 09:28
  */
 public class TokenUtil {
-    public static final ThreadLocal<?> SERVER_LOCAL = new ThreadLocal<>();
+    public static final ThreadLocal<Object> SERVER_LOCAL = new ThreadLocal<>();
 
     private static final Logger logger = Logger.getLogger(TokenUtil.class);
 
-    /*token过期时间*/
-    private static final long EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000;
+    /*token过期时间24小时*/
+    private static final long EXPIRE_TIME = 24 * 60 * 60 * 1000 * 2;
     /*密钥*/
     private static final String TOKEN_SECRET = "1yDHuds8fslZmwenHjh";
 
@@ -196,16 +196,16 @@ public class TokenUtil {
             map.put(clazz.getSimpleName(), obj);
             return map;
         } catch (SignatureVerificationException e) {
-            logger.error("[请求失败]:", e);
+            logger.error("[请求失败]:无效签名", e);
             map.put("msg", "无效签名");
         } catch (TokenExpiredException e) {
-            logger.error("[请求失败]:", e);
+            logger.error("[请求失败]:token过期", e);
             map.put("msg", "token过期");
         } catch (AlgorithmMismatchException e) {
-            logger.error("[请求失败]:", e);
+            logger.error("[请求失败]:token算法不一致", e);
             map.put("msg", "token算法不一致");
         } catch (Exception e) {
-            logger.error("[请求失败]:", e);
+            logger.error("[请求失败]:请求失败", e);
             map.put("msg", "token无效");
         }
         map.put("status", false);

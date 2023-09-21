@@ -35,14 +35,17 @@ public class EmpUserServiceImpl implements IEmpUserService {
             return flag;*/
 
             EmpUser user = null;
-            Integer empUserId = empUser.getEmpUserId();
-            int count = empUserDaoImpl.countEmpUserById(empUserId);
-            /*count !=0 用户存在*/
-            if (count != 0) {
-                user = empUserDaoImpl.selectEmpUser(empUser);
+
+            if (empUser != null) {
+                Integer empUserId = empUser.getEmpUserId();
+                int count = empUserDaoImpl.countEmpUserById(empUserId);
+                /*count !=0 用户存在*/
+                if (count != 0) {
+                    user = empUserDaoImpl.selectEmpUser(empUser);
+                }
+
             }
             return user;
-
         } catch (Exception e) {
             logger.error(e);
             throw new BusinessException(Code.BUSINESS_ERR, "参数错误");
