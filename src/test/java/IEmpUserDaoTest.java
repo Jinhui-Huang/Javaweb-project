@@ -2,6 +2,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jr.dao.IEmpUserDao;
 import com.jr.pojo.EmpUser;
+import com.jr.service.IEmpUserService;
 import com.jr.util.MyBatisUtil;
 import com.jr.util.TokenUtil;
 import com.mysql.cj.Session;
@@ -30,7 +31,6 @@ public class IEmpUserDaoTest  {
     private static final SqlSession session = MyBatisUtil.openSession(true);
 
     private final IEmpUserDao empUserDaoImpl = session.getMapper(IEmpUserDao.class);
-
 
     @Test
     public void testCountEmpUser() {

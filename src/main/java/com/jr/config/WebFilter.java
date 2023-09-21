@@ -35,7 +35,7 @@ public class WebFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
-        /*Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies();
         String url = "*";
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -43,15 +43,12 @@ public class WebFilter implements Filter {
                     url = cookie.getValue();
                 }
             }
-        }*/
-        String url = "http://192.168.1.164:8081";
+        }
         response.setHeader("Access-Control-Allow-Origin", url);
         response.setHeader("Access-Control-Allow-Methods", "*");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Set-Cookie");
+        response.setHeader("Access-Control-Allow-Headers", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
-/*        response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=None");*/
 
         String requestURI = request.getRequestURI();
         if (paths.contains(requestURI)) {
@@ -80,28 +77,29 @@ public class WebFilter implements Filter {
     }
 
     private void verifyToken(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        /*cookie存储token, 缺点: 跨域无法传送cookie数据*/
-        String cookie = request.getHeader("Cookie");
-        String token = null;
-        if (cookie != null && cookie.contains("token=")) {
-            String[] split = cookie.split("token=");
-            token = split[split.length - 1];
-        }
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
 
-        /*header存储*/
-        /*String token = request.getHeader("Authorization");*/
-        if (token != null) {
-            Map<String, Object> verify = TokenUtil.verify(token, EmpUser.class);
-            boolean flag = (boolean) verify.get("status");
-            if (flag) {
-                EmpUser user = (EmpUser) verify.get(EmpUser.class.getSimpleName());
-                TokenUtil.SERVER_LOCAL.set(user);
-                chain.doFilter(request, response);
-                TokenUtil.SERVER_LOCAL.remove();
-                return;
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    String token = cookie.getValue();
+                    if (token != null) {
+                        Map<String, Object> verify = TokenUtil.verify(token, EmpUser.class);
+                        Boolean status = (Boolean) verify.get("status");
+                        if (status) {
+                            EmpUser empUser = (EmpUser) verify.get(EmpUser.class.getSimpleName());
+                            TokenUtil.SERVER_LOCAL.set(empUser);
+                            chain.doFilter(request, response);
+                            TokenUtil.SERVER_LOCAL.remove();
+                            return;
+                        }
+                    }
+                }
             }
+
         }
         ReqRespMsgUtil.sendMsg(response, new Result(Code.BUSINESS_ERR, false, "请登陆访问"));
+
     }
 
     private long countChar(String text, char targetChar) {
