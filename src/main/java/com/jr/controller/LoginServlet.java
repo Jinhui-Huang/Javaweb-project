@@ -8,7 +8,7 @@ import com.jr.util.ReqRespMsgUtil;
 import com.jr.util.Result;
 import com.jr.util.TokenUtil;
 import com.jr.util.VerifyCode;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -24,11 +24,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Slf4j
 @WebServlet("/login/*")
 public class LoginServlet extends HttpServlet {
     private static final ArrayList<String> loginPaths = new ArrayList<>();
-
-    private final Logger logger = Logger.getLogger(LoginServlet.class);
 
     static {
         loginPaths.add("login");
@@ -74,18 +73,18 @@ public class LoginServlet extends HttpServlet {
 
             System.out.println("验证码==>" + verifyCode);
             resp.setContentType("image/jpeg");
-
+            int i = 1 / 0;
             outputStream = resp.getOutputStream();
             ImageIO.write(bufferedImage, "jpeg", outputStream);
             outputStream.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             try {
                 assert outputStream != null;
                 outputStream.close();
-            } catch (IOException ex) {
-                logger.error(ex);
+            } catch (Exception ex) {
+                log.error(ex.getMessage(), ex);
             }
-            logger.error(e);
+            log.error(e.getMessage(), e);
             ReqRespMsgUtil.sendMsg(resp, new Result(Code.BUSINESS_ERR, false, "验证码异常"));
 
         }

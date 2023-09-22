@@ -21,7 +21,9 @@ public class TokenTest {
     @Test
     public void testToken() {
         ThreadLocal<EmpUser> local = new ThreadLocal<>();
+
         EmpUser user = new EmpUser(1001, "zhangsan", "jingli", null);
+        
         String token = TokenUtil.sign(user);
         System.out.println("生成token==>" + token);
 

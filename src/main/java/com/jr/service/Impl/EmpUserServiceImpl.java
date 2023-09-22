@@ -6,14 +6,13 @@ import com.jr.exception.BusinessException;
 import com.jr.pojo.EmpUser;
 import com.jr.service.IEmpUserService;
 import com.jr.util.MyBatisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 
-import org.apache.log4j.Logger;
-
+@Slf4j
 public class EmpUserServiceImpl implements IEmpUserService {
 
     private static final SqlSession session = MyBatisUtil.openSession(true);
-    private final Logger logger = Logger.getLogger(EmpUserServiceImpl.class);
     private final IEmpUserDao empUserDaoImpl = session.getMapper(IEmpUserDao.class);
 
 
@@ -43,11 +42,10 @@ public class EmpUserServiceImpl implements IEmpUserService {
                 if (count != 0) {
                     user = empUserDaoImpl.selectEmpUser(empUser);
                 }
-
             }
             return user;
         } catch (Exception e) {
-            logger.error(e);
+            log.error("捕捉未知异常", e);
             throw new BusinessException(Code.BUSINESS_ERR, "参数错误");
         }
     }
@@ -62,7 +60,7 @@ public class EmpUserServiceImpl implements IEmpUserService {
                 throw new BusinessException(Code.BUSINESS_ERR, "参数错误");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error("捕捉未知异常", e);
             throw new BusinessException(Code.BUSINESS_ERR, "参数错误");
         }
     }
