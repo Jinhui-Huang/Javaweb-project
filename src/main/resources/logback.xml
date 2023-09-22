@@ -3,7 +3,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
     <!--定义日志文件的存储地址 勿在LogBack的配置中使用相对路径-->
-    <property name="LOG_HOME" value="/home/huian/IdeaProjects/Javaweb-project/logs"/>
+    <property name="LOG_HOME" value="C:\\Users\\hui an\\Documents\\IDEA Porject\\javaWeb-project\\JavaWeb-demo\\logs"/>
     <!-- 定义日志上下文的名称 -->
     <contextName>${LOG_CONTEXT_NAME}</contextName>
 
@@ -11,7 +11,7 @@
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{56}.%method:%L - %msg%n</pattern>
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %green(%logger{50}) - %highlight(%msg) %n</pattern>
             <charset>utf-8</charset>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -28,7 +28,7 @@
             <!--日志文件输出的文件名，按天生成-->
             <!--<FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/error/error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>-->
             <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
+            <MaxHistory>300</MaxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 除按日志记录之外，还配置了日志文件不能超过10M(默认)，若超过10M，日志文件会以索引0开始 -->
                 <maxFileSize>10MB</maxFileSize>
@@ -55,10 +55,8 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名，按小时生成-->
             <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/error/error.%d{yyyy-MM-dd-HH}.%i.log</FileNamePattern>
-            <!--日志文件输出的文件名，按天生成-->
-            <!--<FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/error/error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>-->
             <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
+            <MaxHistory>300</MaxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 除按日志记录之外，还配置了日志文件不能超过10M(默认)，若超过10M，日志文件会以索引0开始 -->
                 <maxFileSize>10MB</maxFileSize>
@@ -87,7 +85,7 @@
             <!--日志文件输出的文件名，按天生成-->
             <!--<FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/error/error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>-->
             <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
+            <MaxHistory>300</MaxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 除按日志记录之外，还配置了日志文件不能超过10M(默认)，若超过10M，日志文件会以索引0开始 -->
                 <maxFileSize>10MB</maxFileSize>
@@ -107,7 +105,7 @@
     </appender>
 
     <!--  日志输出级别 -->
-    <root level="error">
+    <root level="info">
         <appender-ref ref="console"/>
         <appender-ref ref="file.error"/>
         <appender-ref ref="file.info"/>

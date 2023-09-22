@@ -82,9 +82,9 @@ public class LoginServlet extends HttpServlet {
                 assert outputStream != null;
                 outputStream.close();
             } catch (Exception ex) {
-                log.error(ex.getMessage(), ex);
+                log.warn(ex.getMessage(), ex);
             }
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage(), e);
             ReqRespMsgUtil.sendMsg(resp, new Result(Code.BUSINESS_ERR, false, "验证码异常"));
 
         }

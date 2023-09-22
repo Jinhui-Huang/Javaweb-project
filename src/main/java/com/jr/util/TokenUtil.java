@@ -139,7 +139,7 @@ public class TokenUtil {
                 String name = field.getName();
                 Claim claim = decode.getClaim(field.getName());
                 String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
-                if (claim != null) {
+                if (!claim.isNull() && !claim.isMissing()) {
                     switch (field.getType().getSimpleName()) {
                         case "Boolean": {
                             Method method = clazz.getMethod(methodName, Boolean.class);
