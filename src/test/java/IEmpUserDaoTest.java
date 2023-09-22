@@ -70,7 +70,7 @@ public class IEmpUserDaoTest  {
 
     @Test
     public void testSelectPage() {
-        List<EmpUser> empUsers = empUserDaoImpl.selectByPage(1, 3);
+        List<EmpUser> empUsers = empUserDaoImpl.selectByPage(2, 3);
         for (EmpUser empUser : empUsers) {
             System.out.println(empUser);
         }
@@ -88,10 +88,10 @@ public class IEmpUserDaoTest  {
     @Test
     public void testSelectPage3() {
 
-        PageHelper.startPage(5, 3);
+        PageHelper.startPage(-12, 3);
         List<EmpUser> empUsers = empUserDaoImpl.selectByPage3();
-        PageInfo<EmpUser> pageInfo = new PageInfo<>(empUsers);
 
+        PageInfo<EmpUser> pageInfo = new PageInfo<>(empUsers);
         List<EmpUser> list = pageInfo.getList();
         for (EmpUser user : list) {
             System.out.println(user);
@@ -101,7 +101,6 @@ public class IEmpUserDaoTest  {
         System.out.println("分页大小：每页" + pageInfo.getPageSize() + "条");
         System.out.println("数据总数：共" + pageInfo.getTotal() + "条");
         System.out.println("总页数：共" + pageInfo.getPages() + "页");
-
 
     }
 }
