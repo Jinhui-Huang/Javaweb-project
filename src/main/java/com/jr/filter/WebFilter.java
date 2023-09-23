@@ -1,4 +1,4 @@
-package com.jr.config;
+package com.jr.filter;
 
 import com.jr.code.Code;
 import com.jr.pojo.EmpUser;
@@ -24,6 +24,11 @@ public class WebFilter implements Filter {
         paths.add("/");
         paths.add("login");
         paths.add("email");
+        paths.add("login-page");
+        paths.add("info-certification");
+        paths.add("white-list");
+        paths.add("black-list");
+        paths.add("assets");
     }
 
     @Override
@@ -53,7 +58,7 @@ public class WebFilter implements Filter {
         String requestURI = request.getRequestURI();
         if (paths.contains(requestURI)) {
             /* 单 / 进入*/
-            chain.doFilter(request, response);
+            response.sendRedirect("/login-page");
 
         } else if (countChar(requestURI, '/') < 20) {
 

@@ -45,7 +45,14 @@ public class LoginServlet extends HttpServlet {
 
         /* /login */
         if (split.length == 2) {
-            ReqRespMsgUtil.sendMsg(resp, new Result(Code.BUSINESS_ERR, false, "登录不允许使用GET请求"));
+            String sign = TokenUtil.sign(new EmpUser(1001, "zhangsan", "jingli", null));
+            Cookie cookie = new Cookie("token", sign);
+            cookie.setMaxAge(60*60*24*2);
+            cookie.setPath("/");
+            cookie.setSecure(true);
+            cookie.setHttpOnly(true);
+            resp.addCookie(cookie);
+            //ReqRespMsgUtil.sendMsg(resp, new Result(Code.GET_OK, sign, "使用GET请求测试"));
             /* 二级路径 */
         } else if(split.length == 3 && loginPaths.contains(split[2])) {
             switch (split[2]) {
@@ -73,7 +80,7 @@ public class LoginServlet extends HttpServlet {
 
             System.out.println("验证码==>" + verifyCode);
             resp.setContentType("image/jpeg");
-            int i = 1 / 0;
+            //int i = 1 / 0;
             outputStream = resp.getOutputStream();
             ImageIO.write(bufferedImage, "jpeg", outputStream);
             outputStream.close();
